@@ -17,9 +17,12 @@ class DataStore:
                     }
     def create_datastore(self,**kwargs) :
         '''
-            This method will create the datastore. 
-            Optional argument Filepath. 
-            Default filename = "default.json" 
+            Argument :-
+                arg1 : String
+            Description :-
+                This method will create the datastore. 
+                Optional argument Filepath. 
+                Default filename = "default.json" 
         '''
         if('filepath' in kwargs):
             self.path = kwargs['filepath']
@@ -32,10 +35,11 @@ class DataStore:
 
     def write_data(self,key, value, **kwargs):
         """
-            arg1: key,
-            arg2: value,
-            Optional kwargs: "time to live property of the given key" Default : 100
-            This method writes the data into the file that has been passed as a argument.
+            Description -     
+                arg1: key,
+                arg2: value,
+                Optional kwargs: "time to live property of the given key" Default : 100
+                This method writes the data into the file that has been passed as a argument.
         """
         if(self.check_key(key)):
             self.print_error(key,"KEY_EXIST_ERROR")
@@ -80,13 +84,17 @@ class DataStore:
             json.dump(data, f, indent=3)
 
     def check_key(self,key):
+        """
+            Checks if the key is valid or not
+            rtype: bool
+        """
         with open(self.path) as f:
             data = json.load(f)
             try:
                 if(time.time() - data[key]["timestamp"] < data[key]["time_to_live"]):
                     return True
                 else:
-                    delete_key(key)
+                    self.delete_key(key)
                     raise KeyError
             except KeyError:
                 return False
