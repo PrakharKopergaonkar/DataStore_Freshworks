@@ -59,11 +59,13 @@ class DataStore:
 
             if(sys.getsizeof(value)> 16 * 1024):
                 self.print_error(str(value), "VALUE_MAX_LENGTH")
+                return
 
             final_value = {"value" : value, "timestamp": time.time(), "time_to_live":time_to_live}
 
             if(os.path.getsize(self.path)+sys.getsizeof(final_value)+sys.getsizeof(key)>1024*1024):
                 self.print_error("\n", "FILE_SIZE_EXCEED")
+                return
 
             data[key] = final_value
         
